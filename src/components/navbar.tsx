@@ -40,14 +40,14 @@ export default function NavBar () {
           ) : (
             <>
               <li>
-                <Link href="/login">
+                <Link href="/loginPage">
                   <button className="border  border-white px-2 py-1 rounded-lg transition-transform duration-300 hover:scale-110 hover:bg-gray-200">
                     Log In
                   </button>
                 </Link>
               </li>
               <li>
-                <Link href="/register">
+                <Link href="/registerPage">
                   <button className="border border-black px-2 py-1 rounded-lg bg-slate-800 text-white transition-transform duration-300 hover:scale-110 hover:bg-slate-700">
                     Register
                   </button>
