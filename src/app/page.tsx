@@ -1,3 +1,5 @@
+"use client"
+import {useEffect} from "react";
 import NavBar from "@/components/navbar";
 import Footer from "@/components/footer";
 import AutoSuggestSearch from "@/components/AutoSuggestSearch";
@@ -5,7 +7,28 @@ import UniversitiesListed from "@/components/UniversitiesListed";
 import mainLogo from "../app/asset/mainlogo.jpeg"
 import Image from "next/image";
 
+
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserData } from "@/app/redux/slices/authSlice";
+
+
+
 export default function Home() {
+
+  const dispatch = useDispatch();
+  const { isLoggedIn, userData, loading, token } = useSelector(
+    (state: any) => state.auth
+  );
+
+  console.log("this is data of all ----> ",isLoggedIn, userData, loading, token);
+
+
+
+  useEffect(() => {
+    dispatch(fetchUserData());
+  }, [dispatch]);
+
+
   return (
     <div className="relative flex flex-col min-h-screen w-full bg-white">
       {/* Navigation Bar */}

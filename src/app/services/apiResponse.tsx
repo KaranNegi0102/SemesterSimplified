@@ -1,6 +1,6 @@
 import {NextResponse} from "next/server";
 
-export function ApiSuccess(message:string , data : any={}, status:number=200 ){
+export function ApiSuccess(message:string , data : any={}, status:number=200 , cookies?:{name:string , value:string,options?:any}){
   const response = NextResponse.json(
     {
       success:true,
@@ -9,6 +9,11 @@ export function ApiSuccess(message:string , data : any={}, status:number=200 ){
     },
     {status:status}
   )
+
+  if(cookies){
+    response.cookies.set(cookies.name,cookies.value, cookies.options || {});
+  }
+
   return response;
 }
 

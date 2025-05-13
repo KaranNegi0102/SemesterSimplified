@@ -19,7 +19,6 @@ export default function LoginPage() {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
   } = useForm<LoginFormData>({
     defaultValues: {
       email: "",
@@ -34,12 +33,17 @@ export default function LoginPage() {
       // TODO: Implement your authentication logic here
       console.log("Form submitted:", data);
 
-      const response = await axios.post("/api/auth/login", data);
+      const response = await axios.post("/api/auth/login", data,{
+        withCredentials: true,
+      });
       console.log("this is response ", response);
       console.log("this is response data ", response.data);
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      router.push("/loginPage");
+      if (response.data.success) {
+        // setIsLoading(false);
+        console.log("login successful");
+        router.push("/");//i will send it to the home page only
+      }
     } catch (error) {
       console.log(error);
     } finally {
