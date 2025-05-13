@@ -1,6 +1,8 @@
 import {NextRequest} from "next/server";
 import User from "@/app/utils/models/userModel";
 import dbConnection from "@/app/utils/database/dbConnections";
+import {ApiSuccess , ApiError } from "@/app/services/apiResponse";
+
 
 export async function POST(req : NextRequest){
     try{
@@ -11,17 +13,22 @@ export async function POST(req : NextRequest){
       await dbConnection();
 
       const existingUser = await User.findOne({email});
+      console.log("this is existingUser email in backend",existingUser.email)
+      console.log("this is existingUser password in backend",existingUser.password)
 
       if(!existingUser){
-        throw new Error("User doesn't exists");
+        throw ApiError("User doesn't exists",400);
       }
 
       const UserData={
         email:existingUser.email,
-        password:existingUser.password
+        password:existingUser.password,
+        name:existingUser.name,
+        phone:existingUser.phone
+        
       }
 
-      return new Response("User Logged in Successfully");
+      return ApiSuccess("User Logged in Successfully",UserData,200);
 
 
     }catch(error){

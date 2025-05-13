@@ -7,7 +7,9 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 
 type RegisterFormData = {
+  name: string;
   email: string;
+  phone: string;
   password: string;
   confirmPassword: string;
 };
@@ -24,9 +26,10 @@ export default function RegisterPage() {
     watch,
   } = useForm<RegisterFormData>({
     defaultValues: {
+      name: "",
       email: "",
       password: "",
-      confirmPassword: "",
+      phone: "",
     },
   });
 
@@ -38,15 +41,16 @@ export default function RegisterPage() {
     try {
       // TODO: Implement your registration logic here
 
-      console.log("this is FE data",data);
+      console.log("this is FE data", data);
       const response = await axios.post("/api/auth/register", data);
-      console.log("this is FE respone",response);
 
-      console.log("Form submitted:", data);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      // router.push("/loginPage");
+      if(response.data.success){
+        console.log("User registered successfully");
+        router.push("/loginPage");
+      }
+
     } catch (error) {
-      console.log("error in register page", error);
+      console.error("Registration error:", error);
     } finally {
       setIsLoading(false);
     }
@@ -71,6 +75,62 @@ export default function RegisterPage() {
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-6 text-black">
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Full Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                autoComplete="name"
+                className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="Enter your full name"
+                {...register("name", {
+                  required: "Name is required",
+                  minLength: {
+                    value: 2,
+                    message: "Name must be at least 2 characters",
+                  },
+                })}
+              />
+              {errors.name && (
+                <p className="mt-2 text-sm text-red-600">
+                  {errors.name.message}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label
+                htmlFor="phone"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Phone Number
+              </label>
+              <input
+                id="phone"
+                type="tel"
+                autoComplete="tel"
+                className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="Enter your phone number"
+                {...register("phone", {
+                  required: "Phone number is required",
+                  pattern: {
+                    value: /^[0-9]{10}$/,
+                    message: "Please enter a valid 10-digit phone number",
+                  },
+                })}
+              />
+              {errors.phone && (
+                <p className="mt-2 text-sm text-red-600">
+                  {errors.phone.message}
+                </p>
+              )}
+            </div>
+
             <div>
               <label
                 htmlFor="email"
