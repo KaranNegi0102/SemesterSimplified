@@ -1,8 +1,37 @@
+"use client"
 import Link from "next/link";
-import React from "react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux"; 
+import {useAppDispatch } from "@/app/hooks/hooks";
+import { fetchUserData, logout } from "@/app/redux/slices/authSlice";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function NavBar () {
-  const isAuthenticated = false;
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const {isLoggedIn} = useSelector((state:any) => state.auth);
+
+
+  useEffect(() => {
+    dispatch(fetchUserData());
+  },[dispatch]);
+
+  async function handleLogoutButton (){
+    try{
+      const response = await axios.get("/api/auth/logout",{
+        withCredentials: true,
+      });
+      if(response.data.success){
+        console.log("User logged out successfully.");
+        dispatch(logout());
+        router.push("/");
+      }
+    }catch(error){
+      console.error(error);
+    }
+  }
+
 
   return (
     <nav className="bg-gray-900 text-gray-300 shadow-xl">
@@ -22,7 +51,7 @@ export default function NavBar () {
             <Link href="/support">Support Us</Link>
           </li>
 
-          {isAuthenticated ? (
+          {isLoggedIn ? (
             <>
               <li>
                 <Link href="/profile">
@@ -32,7 +61,9 @@ export default function NavBar () {
                 </Link>
               </li>
               <li>
-                <button className="border border-black px-2 py-1 rounded-lg bg-red-500 text-white transition-transform duration-300 hover:scale-110 hover:bg-red-600">
+                <button 
+                onClick={handleLogoutButton}
+                className="border border-black px-2 py-1 rounded-lg bg-red-500 text-white transition-transform duration-300 hover:scale-110 hover:bg-red-600">
                   Log Out
                 </button>
               </li>

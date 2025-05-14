@@ -22,7 +22,6 @@ export default function RegisterPage() {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
     watch,
   } = useForm<RegisterFormData>({
     defaultValues: {
