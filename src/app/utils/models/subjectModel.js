@@ -1,28 +1,27 @@
 import mongoose from "mongoose";
 const subjectSchema = new mongoose.Schema({
     title:{
-      type:string,
+      type:String,
       required:true,
-
     },
     description:{
-      type:string,
+      type:String,
       required:true,
     },
     course:{
-      type:string,
+      type:String,
       required:true,
     },
     course:{
-      type:string,
+      type:String,
       required:true,
     },
     subject:{
-      type:string,
+      type:String,
       required:true,
     },
     category:{
-      type:string,
+      type:String,
       required:true,
       enum:["assignments", "notes", "books", "papers"],
       default:"notes",
@@ -37,7 +36,7 @@ const subjectSchema = new mongoose.Schema({
       required:true,
     },
     university:{
-      type:string,
+      type:String,
       required:true,
     },
     uploadedAt: {

@@ -1,7 +1,5 @@
 "use client";
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "@/lib/firebase";
 import axios from "axios";
 import { data } from "@/data/courses";
 import { UniversitiesList } from "@/data/universities";
@@ -53,7 +51,6 @@ const UploadPage = () => {
 
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("this is form data line 56 in uploadPage.tsx",formData);
 
     if (!file) {
       console.log("No file selected");
@@ -63,22 +60,22 @@ const UploadPage = () => {
     setUploading(true);
 
     try {
-      const storageRef = ref(storage, `pdfs/${file.name}-${Date.now()}`);
-      const snapshot = await uploadBytes(storageRef, file);
-      const downloadURL = await getDownloadURL(snapshot.ref);
+      const formDataToSend = new FormData();
+      formDataToSend.append("pdf", file);
+      Object.entries(formData).forEach(([key, value]) => {
+        formDataToSend.append(key, value);
+      });
 
-      // Send form data along with the file's URL to your backend
-      const res = await axios.post("/api/document/uploadDoc",
-        {
-          ...formData,
-          url: downloadURL,
+      const res = await axios.post("/api/document/uploadDoc", formDataToSend, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
         },
-        { withCredentials: true } 
-      );
+      });
 
-      if (res.data.status === "success") {
+      if (res.data.success) {
         console.log("File uploaded successfully!");
-        setFile(null); // Clear the file input
+        setFile(null);
         setFormData({
           title: "",
           description: "",
@@ -88,7 +85,6 @@ const UploadPage = () => {
           uploadedBy: "",
           university: "",
         });
-        // navigate('/myUploads')
       } else {
         console.log("Failed to save file information.");
       }
