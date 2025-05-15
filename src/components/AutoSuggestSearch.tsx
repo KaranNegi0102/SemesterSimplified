@@ -42,7 +42,7 @@ export default function AutoSuggestSearch() {
   }
 
   return (
-    <div className="w-full max-w-md mx-auto p-4 relative" ref={suggestionsRef}>
+    <div className="w-full max-w-md  p-4 relative" ref={suggestionsRef}>
       <div className="mb-4">
         <select
           id="course"

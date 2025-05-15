@@ -14,6 +14,13 @@ const userSchema = new mongoose.Schema(
     phone: {
       type: String,
     },
+    materialUploaded: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "SubjectMaterial" },
+    ],
+    university: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
