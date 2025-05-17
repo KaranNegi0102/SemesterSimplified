@@ -1,12 +1,16 @@
 "use client";
 import React, { useState, useRef } from "react";
 import { data } from "../app/asset/suggestion";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 interface AutoSuggestSearchProps {
-  onSelectionChange:(
-    course:string,
-    subject:string
-  ) =>void;
+  onSelectionChange: (course: string, subject: string) => void;
 }
 
 export default function AutoSuggestSearch({
@@ -18,13 +22,12 @@ export default function AutoSuggestSearch({
   const [showSuggestions, setShowSuggestions] = useState(false);
   const suggestionsRef = useRef<HTMLDivElement>(null);
 
-  function handleCourseChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    const course = event.target.value;
-    setSelectedCourse(course);
+  function handleCourseChange(value: string) {
+    setSelectedCourse(value);
     setInputValue("");
     setSuggestions([]);
     setShowSuggestions(false);
-    onSelectionChange(course,""); //yeh wale change se jo changed course hoga ussi course ke notes ayenge isme irrespective of subject
+    onSelectionChange(value === "all" ? "" : value, "");
   }
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -50,25 +53,25 @@ export default function AutoSuggestSearch({
     setInputValue(subject);
     setSuggestions([]);
     setShowSuggestions(false);
-    onSelectionChange(selectedCourse,subject);
+    onSelectionChange(selectedCourse, subject);
   }
 
   return (
     <div className="w-full max-w-md  p-4 relative" ref={suggestionsRef}>
       <div className="mb-4">
-        <select
-          id="course"
-          value={selectedCourse}
-          onChange={handleCourseChange}
-          className="w-full p-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="">Select a course</option>
-          {data.map((course) => (
-            <option key={course.degree} value={course.degree}>
-              {course.degree}
-            </option>
-          ))}
-        </select>
+        <Select value={selectedCourse} onValueChange={handleCourseChange}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select a course" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Select a course</SelectItem>
+            {data.map((course) => (
+              <SelectItem key={course.degree} value={course.degree}>
+                {course.degree}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="relative">

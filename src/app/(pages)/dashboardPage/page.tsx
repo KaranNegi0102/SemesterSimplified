@@ -5,6 +5,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface Document {
   _id: string;
@@ -31,8 +39,8 @@ const DashboardPage = () => {
   );
 
   // Filter states
-  const [selectedUniversities, setSelectedUniversities] = useState<string[]>([]);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedUniversity, setSelectedUniversity] = useState<string>("all");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
 
   // Get unique universities and categories from documents
   const universities = Array.from(
@@ -83,21 +91,21 @@ const DashboardPage = () => {
       });
     }
 
-    // Filter by universities
-    if (selectedUniversities.length > 0) {
+    // Filter by university
+    if (selectedUniversity && selectedUniversity !== "all") {
       filtered = filtered.filter(
         (doc) =>
           doc.university &&
-          selectedUniversities.includes(doc.university as string)
+          doc.university.toLowerCase() === selectedUniversity.toLowerCase()
       );
     }
 
     // Filter by categories
-    if (selectedCategories.length > 0) {
+    if (selectedCategory) {
       filtered = filtered.filter(
         (doc) =>
           doc.category &&
-          selectedCategories.includes(doc.category.toLowerCase())
+          doc.category.toLowerCase() === selectedCategory.toLowerCase()
       );
     }
 
@@ -105,8 +113,8 @@ const DashboardPage = () => {
   }, [
     selectedCourse,
     selectedSubject,
-    selectedUniversities,
-    selectedCategories,
+    selectedUniversity,
+    selectedCategory,
     allDocs,
   ]);
 
@@ -115,20 +123,12 @@ const DashboardPage = () => {
     setSelectedSubject(subject);
   };
 
-  const handleUniversityChange = (university: string) => {
-    setSelectedUniversities((prev) =>
-      prev.includes(university)
-        ? prev.filter((u) => u !== university)
-        : [...prev, university]
-    );
+  const handleUniversityChange = (value: string) => {
+    setSelectedUniversity(value);
   };
 
   const handleCategoryChange = (category: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
-    );
+    setSelectedCategory((prev) => (prev === category ? "" : category));
   };
 
   return (
@@ -147,68 +147,78 @@ const DashboardPage = () => {
 
       {/* in this div there is one big and inside that big div there are two more divs in collumn way  */}
       <div className="flex flex-row w-full p-4 gap-6">
-
         {/* Second column div - Filters */}
-        <div className="w-1/2 border-4 border-black bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-bold mb-4">Filter Notes</h2>
+        <div className="w-1/4 h-full bg-gray-100 rounded-lg shadow-md p-3">
+          <h2 className="text-lg font-bold mb-3">Filter Notes</h2>
 
           {/* University Filter */}
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold mb-3">Universities</h3>
-            <div className="space-y-2">
-              {universities.map((university) => (
-                <label key={university} className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    checked={selectedUniversities.includes(
-                      university as string
-                    )}
-                    onChange={() =>
-                      handleUniversityChange(university as string)
-                    }
-                    className="form-checkbox h-4 w-4 text-blue-600 rounded"
-                  />
-                  <span className="text-gray-700">{university}</span>
-                </label>
-              ))}
-            </div>
+          <div className="mb-4">
+            <h3 className="text-sm font-semibold text-gray-900 mb-2">
+              Universities
+            </h3>
+            <Select
+              value={selectedUniversity}
+              onValueChange={handleUniversityChange}
+            >
+              <SelectTrigger className="w-full text-sm">
+                <SelectValue placeholder="All Universities" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Universities</SelectItem>
+                {universities.map((university) => (
+                  <SelectItem key={university} value={university as string}>
+                    {university}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Category Filter */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">Note Types</h3>
-            <div className="space-y-2">
+            <h3 className="text-sm font-semibold text-gray-900 mb-2">
+              Material Types
+            </h3>
+            <div className="grid grid-cols-1 gap-2">
               {category.map((category) => (
-                <label key={category} className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    checked={selectedCategories.includes(category)}
-                    onChange={() => handleCategoryChange(category)}
-                    className="form-checkbox h-4 w-4 text-blue-600 rounded"
-                  />
-                  <span className="text-gray-700 capitalize">{category}</span>
-                </label>
+                <Card
+                  key={category}
+                  className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
+                    selectedCategory === category
+                      ? "border-blue-500 bg-blue-50 text-blue-700"
+                      : "hover:border-blue-200"
+                  }`}
+                  onClick={() => handleCategoryChange(category)}
+                >
+                  <CardContent className="p-2">
+                    <span className="capitalize text-sm">{category}</span>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>
         </div>
 
         {/* First column div */}
-        <div className="w-full bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-bold mb-4">Recent Notes</h2>
-          <div className="space-y-4">
+        <div className="w-full bg-gray-100 rounded-lg shadow-md p-6">
+          <h2 className="text-lg font-bold mb-3">
+            All documents related to your Choice...
+          </h2>
+          <div className="space-y-3">
             {loading ? (
-              <p>Loading documents...</p>
+              <p className="text-sm">Loading documents...</p>
             ) : filteredDocs.length > 0 ? (
               filteredDocs.map((doc) => (
                 <div
                   key={doc._id}
-                  className="border rounded-lg p-4 hover:shadow-md transition-shadow duration-200"
+                  className="border rounded-lg p-3 bg-gray-200 hover:shadow-md transition-shadow duration-200"
                 >
-                  <h3 className="text-lg font-semibold mb-2">{doc.title}</h3>
-                  <p className="text-gray-600 mb-2">{doc.description}</p>
+                  <h3 className="text-base font-semibold mb-1">{doc.title}</h3>
+                  <p className="text-sm text-gray-600 mb-1">
+                    {doc.description}
+                  </p>
                   <div className="flex justify-between items-center">
-                    <div className="text-sm text-gray-500">
+                    <div className="text-xs text-gray-500">
                       <span className="mr-2">{doc.course}</span>
                       <span className="mr-2">•</span>
                       <span>{doc.subject}</span>
@@ -217,7 +227,7 @@ const DashboardPage = () => {
                       href={doc.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm transition-colors duration-200"
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-xs transition-colors duration-200"
                     >
                       View PDF
                     </a>
@@ -225,12 +235,10 @@ const DashboardPage = () => {
                 </div>
               ))
             ) : (
-              <p>No documents found</p>
+              <p className="text-sm">No documents found</p>
             )}
           </div>
         </div>
-
-        
       </div>
     </div>
   );
