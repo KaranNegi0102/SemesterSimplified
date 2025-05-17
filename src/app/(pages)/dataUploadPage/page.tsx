@@ -230,7 +230,7 @@ const UploadPage = () => {
             required
           >
             <option value="select">Select Category</option>
-            <option value="assignments">Assignments</option>
+            <option value="assignments">Assignment</option>
             <option value="notes">Notes</option>
             <option value="books">Books</option>
             <option value="papers">Previous Year Papers</option>

@@ -2,7 +2,16 @@
 import React, { useState, useRef } from "react";
 import { data } from "../app/asset/suggestion";
 
-export default function AutoSuggestSearch() {
+interface AutoSuggestSearchProps {
+  onSelectionChange:(
+    course:string,
+    subject:string
+  ) =>void;
+}
+
+export default function AutoSuggestSearch({
+  onSelectionChange,
+}: AutoSuggestSearchProps) {
   const [selectedCourse, setSelectedCourse] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -10,10 +19,12 @@ export default function AutoSuggestSearch() {
   const suggestionsRef = useRef<HTMLDivElement>(null);
 
   function handleCourseChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    setSelectedCourse(event.target.value);
+    const course = event.target.value;
+    setSelectedCourse(course);
     setInputValue("");
     setSuggestions([]);
     setShowSuggestions(false);
+    onSelectionChange(course,""); //yeh wale change se jo changed course hoga ussi course ke notes ayenge isme irrespective of subject
   }
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -39,6 +50,7 @@ export default function AutoSuggestSearch() {
     setInputValue(subject);
     setSuggestions([]);
     setShowSuggestions(false);
+    onSelectionChange(selectedCourse,subject);
   }
 
   return (

@@ -23,5 +23,9 @@ export const UniversitiesList: University[] = [
   {
     fullName: "Jamia Millia Islamia",
     shortName: "JMI"
-  }
+  },
+  {
+    fullName: "Guru Gobind Singh Indraprastha University",
+    shortName: "GGSIPU"
+  },
 ]; 

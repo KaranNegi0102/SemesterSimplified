@@ -1,12 +1,31 @@
+"use client";
 import NavBar from "@/components/navbar";
 import Footer from "@/components/footer";
 import AutoSuggestSearch from "@/components/AutoSuggestSearch";
 import UniversitiesListed from "@/components/UniversitiesListed";
-import mainLogo from "../app/asset/mainlogo.jpeg"
+import mainLogo from "../app/asset/mainlogo.jpeg";
 import Image from "next/image";
-
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+  const [selectedCourse, setSelectedCourse] = useState("");
+  const [selectedSubject, setSelectedSubject] = useState("");
+
+  function handleSelectionChange(course: string, subject: string) {
+    setSelectedCourse(course);
+    setSelectedSubject(subject);
+
+    // Navigate to dashboard when a subject is selected
+    if (course && subject) {
+      router.push(
+        `/dashboardPage?course=${encodeURIComponent(
+          course
+        )}&subject=${encodeURIComponent(subject)}`
+      );
+    }
+  }
 
   return (
     <div className="relative flex flex-col min-h-screen w-full bg-white">
@@ -37,7 +56,7 @@ export default function Home() {
 
           {/* Search Bar with Icon */}
           <div className="relative w-full max-w-md">
-            <AutoSuggestSearch />
+            <AutoSuggestSearch onSelectionChange={handleSelectionChange} />
           </div>
         </div>
 
