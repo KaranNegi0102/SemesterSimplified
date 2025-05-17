@@ -3,6 +3,16 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import axios from "axios";
 import { data } from "@/data/courses";
 import { UniversitiesList } from "@/data/universities";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Toaster } from "@/components/ui/sonner";
+import { toast } from "sonner";
 
 interface FormData {
   title: string;
@@ -53,7 +63,7 @@ const UploadPage = () => {
     e.preventDefault();
 
     if (!file) {
-      console.log("No file selected");
+      toast.error("Please select a PDF file");
       return;
     }
 
@@ -88,7 +98,7 @@ const UploadPage = () => {
       });
 
       if (res.data.success) {
-        console.log("File uploaded successfully!", res.data);
+        toast.success("File uploaded successfully!");
         setFile(null);
         setFormData({
           title: "",
@@ -100,15 +110,14 @@ const UploadPage = () => {
           university: "",
         });
       } else {
-        console.error("Failed to save file information:", res.data);
-        alert("Failed to upload file. Please try again.");
+        toast.error("Failed to upload file. Please try again.");
       }
     } catch (error: any) {
       console.error(
         "Error uploading file:",
         error.response?.data || error.message
       );
-      alert(
+      toast.error(
         error.response?.data?.message || "An error occurred during file upload."
       );
     } finally {
@@ -118,31 +127,32 @@ const UploadPage = () => {
 
   return (
     <div className="container mx-auto p-4">
+      <Toaster />
       <form
         onSubmit={submitHandler}
-        className="bg-[#F5F5F5] p-6 rounded-lg w-full max-w-xl mx-auto space-y-6"
+        className="bg-gray-200 shadow-xl p-6 rounded-lg w-full max-w-xl mx-auto space-y-6"
       >
         <div className="text-left mb-6">
-          <h1 className="text-3xl font-bold text-black text-center">
-            UPLOAD PDF
+          <h1 className="text-2xl font-bold text-black text-center">
+            Upload Notes
           </h1>
         </div>
 
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="title"
-            className="block text-lg text-black font-semibold"
+            className="block text-lg  text-black font-semibold"
           >
             Title
           </label>
-          <input
+          <Input
             type="text"
             name="title"
             id="title"
             value={formData.title}
             onChange={changeHandler}
             placeholder="Enter Title"
-            className="p-3 rounded-md bg-white text-black border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="bg-white text-black"
             required
           />
         </div>
@@ -172,21 +182,24 @@ const UploadPage = () => {
           >
             Course
           </label>
-          <select
+          <Select
             name="course"
-            id="course"
             value={formData.course}
-            onChange={changeHandler}
-            className="p-3 rounded-md bg-white text-black border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
+            onValueChange={(value) =>
+              changeHandler({ target: { name: "course", value } } as any)
+            }
           >
-            <option value="">Select Course</option>
-            {data.map((degree, index) => (
-              <option key={index} value={degree.degree}>
-                {degree.degree}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full bg-white text-black">
+              <SelectValue placeholder="Select Course" />
+            </SelectTrigger>
+            <SelectContent>
+              {data.map((degree, index) => (
+                <SelectItem key={index} value={degree.degree}>
+                  {degree.degree}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="flex flex-col space-y-2">
@@ -196,22 +209,25 @@ const UploadPage = () => {
           >
             Subject
           </label>
-          <select
+          <Select
             name="subject"
-            id="subject"
             value={formData.subject}
-            onChange={changeHandler}
-            className="p-3 rounded-md bg-white text-black border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-            disabled={!formData.course} // Disable if no course selected
+            onValueChange={(value) =>
+              changeHandler({ target: { name: "subject", value } } as any)
+            }
+            disabled={!formData.course}
           >
-            <option value="">Select Subject</option>
-            {subjects.map((subject, index) => (
-              <option key={index} value={subject}>
-                {subject}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full bg-white text-black">
+              <SelectValue placeholder="Select Subject" />
+            </SelectTrigger>
+            <SelectContent>
+              {subjects.map((subject, index) => (
+                <SelectItem key={index} value={subject}>
+                  {subject}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="flex flex-col space-y-2">
@@ -221,20 +237,23 @@ const UploadPage = () => {
           >
             Category
           </label>
-          <select
+          <Select
             name="category"
-            id="category"
             value={formData.category}
-            onChange={changeHandler}
-            className="p-3 rounded-md bg-white text-black border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
+            onValueChange={(value) =>
+              changeHandler({ target: { name: "category", value } } as any)
+            }
           >
-            <option value="select">Select Category</option>
-            <option value="assignments">Assignment</option>
-            <option value="notes">Notes</option>
-            <option value="books">Books</option>
-            <option value="papers">Previous Year Papers</option>
-          </select>
+            <SelectTrigger className="w-full bg-white text-black">
+              <SelectValue placeholder="Select Category" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="assignments">Assignment</SelectItem>
+              <SelectItem value="notes">Notes</SelectItem>
+              <SelectItem value="books">Books</SelectItem>
+              <SelectItem value="papers">Previous Year Papers</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="flex flex-col space-y-2">
@@ -244,21 +263,24 @@ const UploadPage = () => {
           >
             University
           </label>
-          <select
+          <Select
             name="university"
-            id="university"
             value={formData.university}
-            onChange={changeHandler}
-            className="p-3 rounded-md bg-white text-black border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
+            onValueChange={(value) =>
+              changeHandler({ target: { name: "university", value } } as any)
+            }
           >
-            <option value="">Select University</option>
-            {UniversitiesList.map((university, index) => (
-              <option key={index} value={university.fullName}>
-                {university.fullName}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full bg-white text-black">
+              <SelectValue placeholder="Select University" />
+            </SelectTrigger>
+            <SelectContent>
+              {UniversitiesList.map((university, index) => (
+                <SelectItem key={index} value={university.fullName}>
+                  {university.fullName}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="flex flex-col space-y-2">
@@ -268,7 +290,7 @@ const UploadPage = () => {
           >
             PDF File
           </label>
-          <input
+          <Input
             type="file"
             name="pdf"
             id="pdf"
@@ -282,7 +304,6 @@ const UploadPage = () => {
               }
             }}
             accept="application/pdf"
-            className="p-3 rounded-md bg-white text-black border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>

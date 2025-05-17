@@ -3,8 +3,7 @@ import AutoSuggestSearch from "@/components/AutoSuggestSearch";
 import NavBar from "@/components/navbar";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import {
   Select,
   SelectTrigger,
@@ -12,7 +11,15 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { BookOpen, RefreshCw } from "lucide-react";
+import Footer from "@/components/footer";
+import Image from "next/image";
+import mainLogo from "@/app/asset/mainlogo.jpeg";
+import { UploadSidebar } from "@/components/ui/sidebar";
+import DataUploadPage from "../dataUploadPage/page";
+import { toast } from "sonner";
 
 interface Document {
   _id: string;
@@ -28,6 +35,7 @@ interface Document {
 
 const DashboardPage = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [allDocs, setAllDocs] = useState<Document[]>([]);
   const [filteredDocs, setFilteredDocs] = useState<Document[]>([]);
   const [loading, setLoading] = useState(true);
@@ -51,6 +59,8 @@ const DashboardPage = () => {
     new Set(allDocs.map((doc) => doc.category).filter(Boolean))
   );
   // const category = ["assignments", "notes", "papers", "books"];
+
+  const [isUploadSidebarOpen, setIsUploadSidebarOpen] = useState(false);
 
   useEffect(() => {
     const fetchDocuments = async () => {
@@ -131,25 +141,80 @@ const DashboardPage = () => {
     setSelectedCategory((prev) => (prev === category ? "" : category));
   };
 
+  const handleRefresh = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get("/api/document/getDoc");
+      if (response.data.success) {
+        setAllDocs(response.data.data);
+        setFilteredDocs(response.data.data);
+        setSelectedCourse("");
+        setSelectedSubject("");
+        setSelectedUniversity("all");
+        setSelectedCategory("");
+        router.push("/dashboardPage");
+        toast.success("Page refreshed successfully!");
+      }
+    } catch (error) {
+      console.error("Error refreshing documents:", error);
+      toast.error("Failed to refresh documents");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="relative flex flex-col min-h-screen w-full bg-white">
       <NavBar />
 
       {/* this div contains auto suggestion part */}
-      <div className="items-start flex justify-between gap-4 p-4">
-        <AutoSuggestSearch onSelectionChange={handleSelectionChange} />
-        <Link href="/dataUploadPage">
-          <button className="bg-gray-900 hover:bg-gray-800 text-white font-semibold py-2 mt-8 px-[10%] rounded-lg transition-colors duration-200">
-            Upload Notes
-          </button>
-        </Link>
+      <div className="flex justify-center w-full p-4">
+        <div className="w-full flex justify-between items-center gap-4 p-1">
+          {/* Logo - Left */}
+          <div className="flex-shrink-0">
+            <Image
+              src={mainLogo}
+              alt="Semester Simplified Logo"
+              width={150}
+              height={150}
+              className="rounded-full"
+            />
+          </div>
+
+          {/* Search - Middle */}
+          <div className="flex-1 flex justify-center">
+            <div className="w-[600px]">
+              <AutoSuggestSearch onSelectionChange={handleSelectionChange} />
+            </div>
+          </div>
+
+          {/* Buttons - Right */}
+          <div className="flex-shrink-0 flex gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handleRefresh}
+              className="cursor-pointer hover:bg-gray-100"
+            >
+              <RefreshCw className="h-4 w-4" />
+            </Button>
+            <Button
+              className="cursor-pointer"
+              variant="default"
+              size="default"
+              onClick={() => setIsUploadSidebarOpen(true)}
+            >
+              Upload Notes
+            </Button>
+          </div>
+        </div>
       </div>
 
       {/* in this div there is one big and inside that big div there are two more divs in collumn way  */}
-      <div className="flex flex-row w-full p-4 gap-6">
+      <div className="flex flex-row w-full p-2 gap-6 mb-[10%]">
         {/* Second column div - Filters */}
-        <div className="w-1/4 h-full bg-gray-100 rounded-lg shadow-md p-3">
-          <h2 className="text-lg font-bold mb-3">Filter Notes</h2>
+        <div className="w-1/3 h-full bg-gray-100 rounded-lg shadow-md p-3">
+          <h2 className="text-lg font-bold text-center mb-3">Filter Notes</h2>
 
           {/* University Filter */}
           <div className="mb-4">
@@ -160,7 +225,7 @@ const DashboardPage = () => {
               value={selectedUniversity}
               onValueChange={handleUniversityChange}
             >
-              <SelectTrigger className="w-full text-sm">
+              <SelectTrigger className="w-full bg-white text-sm">
                 <SelectValue placeholder="All Universities" />
               </SelectTrigger>
               <SelectContent>
@@ -185,14 +250,12 @@ const DashboardPage = () => {
                   key={category}
                   className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
                     selectedCategory === category
-                      ? "border-blue-500 bg-blue-50 text-blue-700"
+                      ? "border-gray-900 bg-gray-900  text-white"
                       : "hover:border-blue-200"
                   }`}
                   onClick={() => handleCategoryChange(category)}
                 >
-                  <CardContent className="p-2">
-                    <span className="capitalize text-sm">{category}</span>
-                  </CardContent>
+                  <p className="text-sm capitalize ms-4">{category}</p>
                 </Card>
               ))}
             </div>
@@ -213,24 +276,28 @@ const DashboardPage = () => {
                   key={doc._id}
                   className="border rounded-lg p-3 bg-gray-200 hover:shadow-md transition-shadow duration-200"
                 >
-                  <h3 className="text-base font-semibold mb-1">{doc.title}</h3>
+                  <div className="flex items-center gap-2 mb-1">
+                    <BookOpen className="h-4 w-4 text-gray-600" />
+                    <h3 className="text-base font-semibold">{doc.title}</h3>
+                  </div>
                   <p className="text-sm text-gray-600 mb-1">
-                    {doc.description}
+                    Description: {doc.description}
                   </p>
-                  <div className="flex justify-between items-center">
+                  <div className="flex justify-between font-semibold items-center">
                     <div className="text-xs text-gray-500">
-                      <span className="mr-2">{doc.course}</span>
+                      <span className="mr-2">Course: {doc.course}</span>
                       <span className="mr-2">•</span>
-                      <span>{doc.subject}</span>
+                      <span>Subject: {doc.subject}</span>
                     </div>
-                    <a
-                      href={doc.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-xs transition-colors duration-200"
-                    >
-                      View PDF
-                    </a>
+                    <Button variant="outline" size="sm" className="h-7" asChild>
+                      <a
+                        href={doc.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        View PDF
+                      </a>
+                    </Button>
                   </div>
                 </div>
               ))
@@ -240,6 +307,16 @@ const DashboardPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Upload Sidebar */}
+      <UploadSidebar
+        isOpen={isUploadSidebarOpen}
+        onClose={() => setIsUploadSidebarOpen(false)}
+      >
+        <DataUploadPage />
+      </UploadSidebar>
+
+      <Footer />
     </div>
   );
 };

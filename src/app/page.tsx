@@ -13,6 +13,8 @@ export default function Home() {
   const [selectedCourse, setSelectedCourse] = useState("");
   const [selectedSubject, setSelectedSubject] = useState("");
 
+  console.log(selectedCourse, selectedSubject);
+
   function handleSelectionChange(course: string, subject: string) {
     setSelectedCourse(course);
     setSelectedSubject(subject);
