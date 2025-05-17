@@ -61,7 +61,15 @@ const UploadPage = () => {
 
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append("pdf", file);
+      formDataToSend.append("PDF", file);
+
+      // Log the file details for debugging
+      console.log("File being uploaded:", {
+        name: file.name,
+        type: file.type,
+        size: file.size,
+      });
+
       Object.entries(formData).forEach(([key, value]) => {
         formDataToSend.append(key, value);
       });
@@ -71,10 +79,16 @@ const UploadPage = () => {
         headers: {
           "Content-Type": "multipart/form-data",
         },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total!
+          );
+          console.log(`Upload Progress: ${percentCompleted}%`);
+        },
       });
 
       if (res.data.success) {
-        console.log("File uploaded successfully!");
+        console.log("File uploaded successfully!", res.data);
         setFile(null);
         setFormData({
           title: "",
@@ -86,11 +100,17 @@ const UploadPage = () => {
           university: "",
         });
       } else {
-        console.log("Failed to save file information.");
+        console.error("Failed to save file information:", res.data);
+        alert("Failed to upload file. Please try again.");
       }
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      console.log("An error occurred during file upload.");
+    } catch (error: any) {
+      console.error(
+        "Error uploading file:",
+        error.response?.data || error.message
+      );
+      alert(
+        error.response?.data?.message || "An error occurred during file upload."
+      );
     } finally {
       setUploading(false);
     }
@@ -252,7 +272,15 @@ const UploadPage = () => {
             type="file"
             name="pdf"
             id="pdf"
-            onChange={(e) => setFile(e.target.files?.[0] || null)}
+            onChange={(e) => {
+              const selectedFile = e.target.files?.[0];
+              if (selectedFile && selectedFile.type === "application/pdf") {
+                setFile(selectedFile);
+              } else {
+                alert("Please select a valid PDF file");
+                e.target.value = "";
+              }
+            }}
             accept="application/pdf"
             className="p-3 rounded-md bg-white text-black border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             required

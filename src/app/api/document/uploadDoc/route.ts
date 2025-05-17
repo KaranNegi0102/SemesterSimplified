@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     await dbConnection();
 
     const formData = await req.formData();
-    const file = formData.get("pdf");
+    const file = formData.get("PDF");
     
     if (!file || !(file instanceof File)) {
       return ApiError("No file uploaded", 400);
@@ -29,19 +29,33 @@ export async function POST(req: Request) {
         .upload_stream(
           {
             resource_type: "raw",
+            format: "pdf",
             folder: "pdfs",
+            public_id: `${Date.now()}-${file.name}`,
           },
           (error, result) => {
-            if (error) reject(error);
-            else resolve(result);
+            if (error) {
+              console.error("Cloudinary upload error:", error);
+              reject(error);
+            } else {
+              console.log("Cloudinary upload success:", result);
+              resolve(result);
+            }
           }
         )
         .end(buffer);
     });
 
-    const url = uploadResponse.secure_url;
+    if (!uploadResponse || !uploadResponse.secure_url) {
+      console.error("Upload response missing secure_url:", uploadResponse);
+      return ApiError("Failed to upload file to Cloudinary", 500);
+    }
+
+    const url = uploadResponse.secure_url.replace('/image/upload/', '/raw/upload/');
 
     const fields = Object.fromEntries(formData.entries());
+
+    
     const { title, description, course, subject, category, university } = fields;
 
     if (!title || !description || !course || !subject || !category || !university) {
