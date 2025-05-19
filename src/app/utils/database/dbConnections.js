@@ -2,7 +2,7 @@ import mongoose from "mongoose" ;
 
 export default async function connectionDB (){
   try{
-    await mongoose.connect("mongodb+srv://karan0102:Gautamn49@projects.yrofojl.mongodb.net/SemSemesterDB")
+    await mongoose.connect(process.env.DatabaseUrl, { useNewUrlParser: true, useUnifiedTopology: true }  )
     .then(() => console.log("MongoDB Connected..."))
     .catch((err) => console.error("MongoDB Connection Error : ", err));
   }catch(error){
