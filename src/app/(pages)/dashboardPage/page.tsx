@@ -20,6 +20,7 @@ import mainLogo from "../../../../public/mainLogo.jpeg";
 import { UploadSidebar } from "@/components/ui/sidebar";
 import DataUploadPage from "../dataUploadPage/page";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 interface Document {
   _id: string;
@@ -47,7 +48,8 @@ const DashboardContent = () => {
   const [allDocs, setAllDocs] = useState<Document[]>([]);
   const [filteredDocs, setFilteredDocs] = useState<Document[]>([]);
   const [loading, setLoading] = useState(true);
-  
+  const {isLoggedIn } = useSelector((state: any) => state.auth);
+
   const [selectedCourse, setSelectedCourse] = useState(
     searchParams.get("course") || ""
   );
@@ -70,29 +72,6 @@ const DashboardContent = () => {
   // const category = ["assignments", "notes", "papers", "books"];
 
   const [isUploadSidebarOpen, setIsUploadSidebarOpen] = useState(false);
-
-  useEffect(() => {
-    const fetchDocuments = async () => {
-      try {
-        const response = await axios.get("/api/document/getDoc");
-        console.log(
-          "this is response data in dashBoardPage.tsx-> ",
-          response.data.data
-        );
-
-        if (response.data.success) {
-          setAllDocs(response.data.data);
-          setFilteredDocs(response.data.data);
-        }
-      } catch (error) {
-        console.error("Error fetching documents:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDocuments();
-  }, []);
 
   useEffect(() => {
     let filtered = allDocs;
@@ -136,6 +115,57 @@ const DashboardContent = () => {
     selectedCategory,
     allDocs,
   ]);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      // toast.error("Please login first to view the content");
+      router.push("/loginPage");
+      return;
+    }
+
+    const fetchDocuments = async () => {
+      try {
+        const response = await axios.get("/api/document/getDoc");
+        console.log(
+          "this is response data in dashBoardPage.tsx-> ",
+          response.data.data
+        );
+
+        if (response.data.success) {
+          setAllDocs(response.data.data);
+          setFilteredDocs(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching documents:", error);
+        toast.error("Failed to fetch documents");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDocuments();
+  }, [isLoggedIn, router]);
+
+  // If not authenticated, show login prompt
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-screen bg-white">
+        <NavBar />
+        <div className="container mx-auto px-4 py-16">
+          <Card className="max-w-md mx-auto p-6 text-center">
+            <h2 className="text-2xl font-bold mb-4">Login Required</h2>
+            <p className="text-gray-600 mb-6">
+              Please login to access the dashboard content.
+            </p>
+            <Button onClick={() => router.push("/loginPage")}>Go to Login</Button>
+          </Card>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  
 
   const handleSelectionChange = (course: string, subject: string) => {
     setSelectedCourse(course);

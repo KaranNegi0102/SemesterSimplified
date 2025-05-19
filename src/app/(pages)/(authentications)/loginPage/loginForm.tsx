@@ -56,7 +56,7 @@ export default function LoginForm () {
 
   return (
     
-      <div className="max-w-md w-full  space-y-8 bg-white p-10 rounded-2xl shadow-2xl ">
+      <div className="max-w-md w-full bg-white p-10 rounded-2xl shadow-2xl ">
         <div>
           <h2 className="mt-2 text-center text-2xl font-bold text-gray-900">
             Sign in to your account
