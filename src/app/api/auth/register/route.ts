@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
       name,
       email,
       password,
-      phone
+      phone,
     });
 
     return ApiSuccess("User registered successfully",
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
        , 201);
 
   } catch(error) {
-    console.error("Registration error:", error);
+    console.log("Registration error:", error);
     return ApiError(error, 500);
   }
 }
