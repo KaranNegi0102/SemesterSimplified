@@ -9,14 +9,13 @@ interface USER_DATA_TYPE {
   token: string | null;
 }
 
-interface TYPE_OF_INITIAL_STATE{
+interface TYPE_OF_INITIAL_STATE {
   isLoggedIn: boolean;
   token: string | null;
   userData: USER_DATA_TYPE | null;
   loading: boolean;
   error: string | null;
 }
-
 
 // Initial state
 const initialState: TYPE_OF_INITIAL_STATE = {
@@ -33,7 +32,6 @@ export const fetchUserData = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       console.log("STEP 1 - THUNK CHAL GAYA");
-      
       const response = await axios.get("/api/auth/checkUser", {
         withCredentials: true,
       });
@@ -56,7 +54,6 @@ const authSlice = createSlice({
       state.userData = action.payload;
       state.loading = false;
       console.log("action.payload in login is -> ", action.payload);
-      
     },
     setToken: (state, action: PayloadAction<string | null>) => {
       state.token = action.payload;
@@ -74,7 +71,6 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
         console.log("THUNK PENDING  HAI");
-
       })
       .addCase(
         fetchUserData.fulfilled,
@@ -84,7 +80,6 @@ const authSlice = createSlice({
           state.isLoggedIn = true;
           state.token = action.payload.token;
           console.log("THUNK FULLFILL HOGAYA HAI");
-          
         }
       )
       .addCase(fetchUserData.rejected, (state, action) => {
@@ -93,7 +88,6 @@ const authSlice = createSlice({
         state.userData = null;
         state.error = action.payload as string;
         console.log("THUNK REJECT HOGAYA HAI");
-
       });
   },
 });

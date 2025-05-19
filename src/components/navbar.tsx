@@ -12,6 +12,7 @@ export default function NavBar() {
   const router = useRouter();
   const { isLoggedIn } = useSelector((state: any) => state.auth);
 
+  
   useEffect(() => {
     dispatch(fetchUserData());
   }, [dispatch]);

@@ -47,6 +47,7 @@ const DashboardContent = () => {
   const [allDocs, setAllDocs] = useState<Document[]>([]);
   const [filteredDocs, setFilteredDocs] = useState<Document[]>([]);
   const [loading, setLoading] = useState(true);
+  
   const [selectedCourse, setSelectedCourse] = useState(
     searchParams.get("course") || ""
   );
