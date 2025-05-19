@@ -42,10 +42,7 @@ export default function NavBar() {
             <Link href="/">Home</Link>
           </li>
           <li className="hover:text-blue-500 transition-all duration-300 ease-in-out cursor-pointer">
-            <Link href="/about">About Us</Link>
-          </li>
-          <li className="hover:text-blue-500 transition-all duration-300 ease-in-out cursor-pointer">
-            <Link href="/support">Support Us</Link>
+            <Link href="/aboutUs">About Us</Link>
           </li>
 
           {isLoggedIn ? (

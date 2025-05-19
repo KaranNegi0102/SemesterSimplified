@@ -69,28 +69,13 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/about"
+                  href="/aboutUs"
                   className="hover:text-white transition-colors"
                 >
                   About Us
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="/courses"
-                  className="hover:text-white transition-colors"
-                >
-                  Courses
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="hover:text-white transition-colors"
-                >
-                  Contact
-                </Link>
-              </li>
+              
             </ul>
           </div>
 
@@ -100,7 +85,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/faq"
+                  href="/"
                   className="hover:text-white transition-colors"
                 >
                   FAQs
@@ -108,7 +93,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/blog"
+                  href="/"
                   className="hover:text-white transition-colors"
                 >
                   Blog
@@ -116,7 +101,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/support"
+                  href="/"
                   className="hover:text-white transition-colors"
                 >
                   Support
@@ -124,7 +109,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/privacy"
+                  href="/"
                   className="hover:text-white transition-colors"
                 >
                   Privacy Policy
@@ -153,7 +138,7 @@ export default function Footer() {
                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                   />
                 </svg>
-                <span>contact@semestersimplified.com</span>
+                <span>semestersimplified00@gmail.com</span>
               </li>
               <li className="flex items-center space-x-2">
                 <svg
@@ -169,7 +154,7 @@ export default function Footer() {
                     d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                   />
                 </svg>
-                <span>+1 (555) 123-4567</span>
+                <span>+91 9876543210</span>
               </li>
             </ul>
           </div>
