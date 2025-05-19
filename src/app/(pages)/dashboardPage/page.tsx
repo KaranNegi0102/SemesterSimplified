@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { BookOpen, RefreshCw } from "lucide-react";
 import Footer from "@/components/footer";
 import Image from "next/image";
-import mainLogo from "@/app/asset/mainLogo.jpeg";
+import mainLogo from "../../../../public/mainLogo.jpeg";
 import { UploadSidebar } from "@/components/ui/sidebar";
 import DataUploadPage from "../dataUploadPage/page";
 import toast from "react-hot-toast";

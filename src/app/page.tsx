@@ -3,7 +3,7 @@ import NavBar from "@/components/navbar";
 import Footer from "@/components/footer";
 import AutoSuggestSearch from "@/components/AutoSuggestSearch";
 import UniversitiesListed from "@/components/UniversitiesListed";
-import mainLogo from "../app/asset/mainLogo.jpeg";
+import mainLogo from "../../../../public/mainLogo.jpeg";
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
