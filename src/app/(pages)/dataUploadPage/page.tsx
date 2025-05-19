@@ -11,8 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Toaster } from "@/components/ui/sonner";
-import { toast } from "sonner";
+import toast from "react-hot-toast";
 
 interface FormData {
   title: string;
@@ -127,7 +126,6 @@ const UploadPage = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <Toaster />
       <form
         onSubmit={submitHandler}
         className="bg-gray-200 shadow-xl p-6 rounded-lg w-full max-w-xl mx-auto space-y-6"

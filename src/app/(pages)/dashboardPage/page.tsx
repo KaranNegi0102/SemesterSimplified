@@ -1,7 +1,7 @@
 "use client";
 import AutoSuggestSearch from "@/components/AutoSuggestSearch";
 import NavBar from "@/components/navbar";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import axios from "axios";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
@@ -11,15 +11,15 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { Card} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BookOpen, RefreshCw } from "lucide-react";
 import Footer from "@/components/footer";
 import Image from "next/image";
-import mainLogo from "@/app/asset/mainlogo.jpeg";
+import mainLogo from "@/app/asset/mainLogo.jpeg";
 import { UploadSidebar } from "@/components/ui/sidebar";
 import DataUploadPage from "../dataUploadPage/page";
-import { toast } from "sonner";
+import toast from "react-hot-toast";
 
 interface Document {
   _id: string;
@@ -34,6 +34,14 @@ interface Document {
 }
 
 const DashboardPage = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <DashboardContent />
+    </Suspense>
+  );
+};
+
+const DashboardContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [allDocs, setAllDocs] = useState<Document[]>([]);

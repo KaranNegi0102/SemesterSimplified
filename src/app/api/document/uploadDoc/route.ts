@@ -28,9 +28,9 @@ export async function POST(req: Request) {
       cloudinary.uploader
         .upload_stream(
           {
-            resource_type: "raw",
+            resource_type: "auto",
             format: "pdf",
-            folder: "pdfs",
+            folder: "PDFs",
             public_id: `${Date.now()}-${file.name}`,
           },
           (error, result) => {
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
       return ApiError("Failed to upload file to Cloudinary", 500);
     }
 
-    const url = uploadResponse.secure_url.replace('/image/upload/', '/raw/upload/');
+    const url = uploadResponse.secure_url.replace('/image/upload/', '/auto/upload/');
 
     const fields = Object.fromEntries(formData.entries());
 
