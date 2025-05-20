@@ -32,6 +32,7 @@ interface Document {
   url: string;
   createdAt: string;
   university?: string;
+  uploadedBy: string;
 }
 
 const DashboardPage = () => {
@@ -48,7 +49,8 @@ const DashboardContent = () => {
   const [allDocs, setAllDocs] = useState<Document[]>([]);
   const [filteredDocs, setFilteredDocs] = useState<Document[]>([]);
   const [loading, setLoading] = useState(true);
-  const {isLoggedIn } = useSelector((state: any) => state.auth);
+  const [authChecking, setAuthChecking] = useState(true);
+  const { isLoggedIn, userData } = useSelector((state: any) => state.auth);
 
   const [selectedCourse, setSelectedCourse] = useState(
     searchParams.get("course") || ""
@@ -114,13 +116,12 @@ const DashboardContent = () => {
     selectedUniversity,
     selectedCategory,
     allDocs,
+    // uploadedDocs,
   ]);
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      // toast.error("Please login first to view the content");
-      router.push("/loginPage");
-      return;
+    if (isLoggedIn) {
+      setAuthChecking(false);
     }
 
     const fetchDocuments = async () => {
@@ -146,7 +147,23 @@ const DashboardContent = () => {
     fetchDocuments();
   }, [isLoggedIn, router]);
 
-  // If not authenticated, show login prompt
+  if (isLoggedIn && authChecking) {
+    return (
+      <div className="min-h-screen bg-white">
+        <NavBar />
+        <div className="container mx-auto px-4 py-16">
+          <Card className="max-w-md mx-auto p-6 text-center">
+            <h2 className="text-2xl font-bold mb-4">Loading...</h2>
+            <p className="text-gray-600 mb-6">
+              Please wait while we verify your authentication status.
+            </p>
+          </Card>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen bg-white">
@@ -157,15 +174,15 @@ const DashboardContent = () => {
             <p className="text-gray-600 mb-6">
               Please login to access the dashboard content.
             </p>
-            <Button onClick={() => router.push("/loginPage")}>Go to Login</Button>
+            <Button onClick={() => router.push("/loginPage")}>
+              Go to Login
+            </Button>
           </Card>
         </div>
         <Footer />
       </div>
     );
   }
-
-  
 
   const handleSelectionChange = (course: string, subject: string) => {
     setSelectedCourse(course);
@@ -199,6 +216,23 @@ const DashboardContent = () => {
       toast.error("Failed to refresh documents");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteDocument = async (docId: string) => {
+    try {
+      const response = await axios.delete(`/api/document/deleteDoc/${docId}`);
+      if (response.data.success) {
+        // Remove the deleted document from both states
+        setAllDocs((prevDocs) => prevDocs.filter((doc) => doc._id !== docId));
+        setFilteredDocs((prevDocs) =>
+          prevDocs.filter((doc) => doc._id !== docId)
+        );
+        toast.success("Document deleted successfully");
+      }
+    } catch (error) {
+      console.error("Error deleting document:", error);
+      toast.error("Failed to delete document");
     }
   };
 
@@ -287,7 +321,7 @@ const DashboardContent = () => {
               {category.map((category) => (
                 <Card
                   key={category}
-                  className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
+                  className={`border rounded-lg p-3 bg-white hover:shadow-md transition-shadow duration-200 ${
                     selectedCategory === category
                       ? "border-gray-900 bg-gray-900  text-white"
                       : "hover:border-blue-200"
@@ -328,15 +362,32 @@ const DashboardContent = () => {
                       <span className="mr-2">•</span>
                       <span>Subject: {doc.subject}</span>
                     </div>
-                    <Button variant="outline" size="sm" className="h-7" asChild>
-                      <a
-                        href={doc.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-7"
+                        asChild
                       >
-                        View PDF
-                      </a>
-                    </Button>
+                        <a
+                          href={doc.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          View PDF
+                        </a>
+                      </Button>
+                      {userData?.data?.userId === doc.uploadedBy && (
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          className="h-7"
+                          onClick={() => handleDeleteDocument(doc._id)}
+                        >
+                          Delete
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))

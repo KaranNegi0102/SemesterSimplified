@@ -37,13 +37,36 @@ export default function NavBar() {
       <div className="flex items-center justify-between px-4">
         <h1 className="text-xl font-bold py-3">SemesterSimplified</h1>
 
+        
+
+
         <ul className="flex flex-row items-center justify-end gap-4 py-3 px-4 w-full transition-all duration-500 ease-in-out text-md">
+
+        {isLoggedIn ? 
+        (
+          <>
           <li className="hover:text-blue-500 transition-all duration-300 ease-in-out cursor-pointer">
             <Link href="/">Home</Link>
           </li>
           <li className="hover:text-blue-500 transition-all duration-300 ease-in-out cursor-pointer">
             <Link href="/aboutUs">About Us</Link>
           </li>
+          <li className="hover:text-blue-500 transition-all duration-300 ease-in-out cursor-pointer">
+            <Link href="/dashboardPage">Dashboard</Link>
+          </li>
+          </>
+        )
+        :
+        (
+        <>
+        <li className="hover:text-blue-500 transition-all duration-300 ease-in-out cursor-pointer">
+            <Link href="/">Home</Link>
+          </li>
+          <li className="hover:text-blue-500 transition-all duration-300 ease-in-out cursor-pointer">
+            <Link href="/aboutUs">About Us</Link>
+          </li>
+        </>
+        )}
 
           {isLoggedIn ? (
             <>

@@ -40,7 +40,8 @@ export async function GET() {
       name: existingUser.name,
       email: existingUser.email,
       phone: existingUser.phone,
-      token: token.value
+      token: token.value,
+      materialUploaded: existingUser.materialUploaded,
     }
 
     return ApiSuccess("User data fetched successfully", UserData, 200);
