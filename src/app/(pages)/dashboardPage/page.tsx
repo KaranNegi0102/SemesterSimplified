@@ -50,7 +50,7 @@ const DashboardContent = () => {
   const [filteredDocs, setFilteredDocs] = useState<Document[]>([]);
   const [loading, setLoading] = useState(true);
   const [authChecking, setAuthChecking] = useState(true);
-  const { isLoggedIn, userData } = useSelector((state: any) => state.auth);
+  const { isLoggedIn} = useSelector((state: any) => state.auth);
 
   const [selectedCourse, setSelectedCourse] = useState(
     searchParams.get("course") || ""
@@ -219,23 +219,6 @@ const DashboardContent = () => {
     }
   };
 
-  const handleDeleteDocument = async (docId: string) => {
-    try {
-      const response = await axios.delete(`/api/document/deleteDoc/${docId}`);
-      if (response.data.success) {
-        // Remove the deleted document from both states
-        setAllDocs((prevDocs) => prevDocs.filter((doc) => doc._id !== docId));
-        setFilteredDocs((prevDocs) =>
-          prevDocs.filter((doc) => doc._id !== docId)
-        );
-        toast.success("Document deleted successfully");
-      }
-    } catch (error) {
-      console.error("Error deleting document:", error);
-      toast.error("Failed to delete document");
-    }
-  };
-
   return (
     <div className="relative flex flex-col min-h-screen w-full bg-white">
       <NavBar />
@@ -377,16 +360,6 @@ const DashboardContent = () => {
                           View PDF
                         </a>
                       </Button>
-                      {userData?.data?.userId === doc.uploadedBy && (
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          className="h-7"
-                          onClick={() => handleDeleteDocument(doc._id)}
-                        >
-                          Delete
-                        </Button>
-                      )}
                     </div>
                   </div>
                 </div>
