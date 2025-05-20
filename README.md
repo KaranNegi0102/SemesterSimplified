@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+## 📘 SemesterSimplified
 
-First, run the development server:
+SemesterSimplified is an educational web application designed to help undergraduate students find and share academic resources like notes, books, and curriculum materials. Built with Next.js and Redux, it offers a streamlined and intuitive user experience to simplify the semester-wise academic workload.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- 📚 Upload and download semester-wise notes and books
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- 🏫 Browse content by college, university, or course
 
-## Learn More
+- 🧾 Access updated curriculum and syllabus details
 
-To learn more about Next.js, take a look at the following resources:
+- 🗂️ Categorized resources (subjects, semesters, departments)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- 🔍 Search and filter functionality
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- 👥 Student-focused UI with a community-driven approach
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📦 State Management (Redux)
+ - Global states like user auth, notes, book uploads, and filters are handled via Redux.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+ - Redux Toolkit slices are located in the /redux folder.
+
+ - Store is configured with proper middleware and devtools support.
+
+## ✅ TODO / Upcoming Features
+- ⏳ User authentication and roles (admin/student)
+- ⏳ Admin panel to manage resources
+- ⏳ Comment and rating system for materials
+- ⏳ Mobile responsiveness and PWA support
+
+
+## Running Tests
+
+- Open http://semestersimplified.vercel.app with your browser to see the result.
+
+- credentials - (admin@gmail.com , admin@123)
+
+
