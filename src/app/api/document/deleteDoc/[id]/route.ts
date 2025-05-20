@@ -11,8 +11,8 @@ interface DecodedUser {
 }
 
 export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: { params: { id: string } }
 ) {
   try {
     await dbConnection();
@@ -33,7 +33,7 @@ export async function DELETE(
       return ApiError("Invalid user token", 401);
     }
 
-    const document = await Subject.findById(params.id);
+    const document = await Subject.findById(context.params.id);
 
     if (!document) {
       return ApiError("Document not found", 404);
@@ -45,12 +45,12 @@ export async function DELETE(
     }
 
     // Delete the document
-    await Subject.findByIdAndDelete(params.id);
+    await Subject.findByIdAndDelete(context.params.id);
 
     // Remove the document reference from user's materialUploaded array
     await User.findByIdAndUpdate(
       decodedUser.userId,
-      { $pull: { materialUploaded: params.id } }
+      { $pull: { materialUploaded: context.params.id } }
     );
 
     return ApiSuccess("Document deleted successfully", null, 200);
