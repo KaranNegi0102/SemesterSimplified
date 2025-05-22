@@ -32,7 +32,6 @@ interface Document {
   url: string;
   createdAt: string;
   university?: string;
-  uploadedBy: string;
 }
 
 const DashboardPage = () => {
