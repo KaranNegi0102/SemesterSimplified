@@ -117,7 +117,6 @@ const DashboardContent = () => {
     selectedUniversity,
     selectedCategory,
     allDocs,
-    // uploadedDocs,
   ]);
 
   useEffect(() => {
