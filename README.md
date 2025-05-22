@@ -4,6 +4,13 @@
 SemesterSimplified is an educational web application designed to help undergraduate students find and share academic resources like notes, books, and curriculum materials. Built with Next.js and Redux, it offers a streamlined and intuitive user experience to simplify the semester-wise academic workload.
 
 
+## Running Tests
+
+- Open http://semestersimplified.vercel.app with your browser to see the result.
+
+- credentials - (admin@gmail.com , admin@123)
+
+
 ## Features
 
 - 📚 Upload and download semester-wise notes and books
@@ -33,10 +40,6 @@ SemesterSimplified is an educational web application designed to help undergradu
 - ⏳ Mobile responsiveness and PWA support
 
 
-## Running Tests
 
-- Open http://semestersimplified.vercel.app with your browser to see the result.
-
-- credentials - (admin@gmail.com , admin@123)
 
 
