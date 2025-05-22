@@ -57,16 +57,25 @@ export default function AutoSuggestSearch({
   }
 
   return (
-    <div className="w-full max-w-md  p-4 relative" ref={suggestionsRef}>
-      <div className="mb-4">
+    <div
+      className="w-full max-w-[280px] sm:max-w-md mx-auto p-2 sm:p-4 relative"
+      ref={suggestionsRef}
+    >
+      <div className="mb-3 sm:mb-4">
         <Select value={selectedCourse} onValueChange={handleCourseChange}>
-          <SelectTrigger className="w-full">
+          <SelectTrigger className="w-full text-xs sm:text-base">
             <SelectValue placeholder="Select a course" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Select a course</SelectItem>
+            <SelectItem value="all" className="text-xs sm:text-base">
+              Select a course
+            </SelectItem>
             {data.map((course) => (
-              <SelectItem key={course.degree} value={course.degree}>
+              <SelectItem
+                key={course.degree}
+                value={course.degree}
+                className="text-xs sm:text-base"
+              >
                 {course.degree}
               </SelectItem>
             ))}
@@ -83,17 +92,17 @@ export default function AutoSuggestSearch({
             selectedCourse ? "Search subjects..." : "Select a course first"
           }
           disabled={!selectedCourse}
-          className={`w-full p-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+          className={`w-full p-2 text-xs sm:text-base border text-black border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
             !selectedCourse ? "bg-gray-100 cursor-not-allowed" : ""
           }`}
         />
 
         {showSuggestions && suggestions.length > 0 && (
-          <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
+          <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 sm:max-h-60 overflow-y-auto">
             {suggestions.map((subject, index) => (
               <div
                 key={`${selectedCourse}-${index}`}
-                className="px-4 py-2 hover:bg-gray-100 text-black cursor-pointer"
+                className="px-3 sm:px-4 py-1.5 sm:py-2 hover:bg-gray-100 text-black cursor-pointer text-sm sm:text-base"
                 onClick={() => handleSuggestionClick(subject)}
               >
                 {subject}

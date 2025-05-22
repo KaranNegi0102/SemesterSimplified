@@ -4,20 +4,20 @@ import Link from "next/link";
 export default function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300">
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12">
           {/* Company Info */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-bold text-white">
+          <div className="space-y-3 sm:space-y-4">
+            <h3 className="text-lg sm:text-xl font-bold text-white">
               Semester Simplified
             </h3>
-            <p className="text-sm">
+            <p className="text-xs sm:text-sm">
               Making education accessible and efficient for students worldwide.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="hover:text-white transition-colors">
                 <svg
-                  className="w-6 h-6"
+                  className="w-5 h-5 sm:w-6 sm:h-6"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                   aria-hidden="true"
@@ -27,7 +27,7 @@ export default function Footer() {
               </a>
               <a href="#" className="hover:text-white transition-colors">
                 <svg
-                  className="w-6 h-6"
+                  className="w-5 h-5 sm:w-6 sm:h-6"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                   aria-hidden="true"
@@ -41,7 +41,7 @@ export default function Footer() {
               </a>
               <a href="#" className="hover:text-white transition-colors">
                 <svg
-                  className="w-6 h-6"
+                  className="w-5 h-5 sm:w-6 sm:h-6"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                   aria-hidden="true"
@@ -58,35 +58,39 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold text-white mb-4">
+            <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">
               Quick Links
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/" className="hover:text-white transition-colors">
+                <Link
+                  href="/"
+                  className="text-xs sm:text-sm hover:text-white transition-colors"
+                >
                   Home
                 </Link>
               </li>
               <li>
                 <Link
                   href="/aboutUs"
-                  className="hover:text-white transition-colors"
+                  className="text-xs sm:text-sm hover:text-white transition-colors"
                 >
                   About Us
                 </Link>
               </li>
-              
             </ul>
           </div>
 
           {/* Resources */}
           <div>
-            <h3 className="text-lg font-semibold text-white mb-4">Resources</h3>
+            <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">
+              Resources
+            </h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   href="/"
-                  className="hover:text-white transition-colors"
+                  className="text-xs sm:text-sm hover:text-white transition-colors"
                 >
                   FAQs
                 </Link>
@@ -94,7 +98,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/"
-                  className="hover:text-white transition-colors"
+                  className="text-xs sm:text-sm hover:text-white transition-colors"
                 >
                   Blog
                 </Link>
@@ -102,7 +106,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/"
-                  className="hover:text-white transition-colors"
+                  className="text-xs sm:text-sm hover:text-white transition-colors"
                 >
                   Support
                 </Link>
@@ -110,7 +114,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/"
-                  className="hover:text-white transition-colors"
+                  className="text-xs sm:text-sm hover:text-white transition-colors"
                 >
                   Privacy Policy
                 </Link>
@@ -120,13 +124,13 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-lg font-semibold text-white mb-4">
+            <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">
               Contact Us
             </h3>
             <ul className="space-y-2">
               <li className="flex items-center space-x-2">
                 <svg
-                  className="w-5 h-5"
+                  className="w-4 h-4 sm:w-5 sm:h-5"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -138,11 +142,13 @@ export default function Footer() {
                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                   />
                 </svg>
-                <span>semestersimplified00@gmail.com</span>
+                <span className="text-xs sm:text-sm">
+                  semestersimplified00@gmail.com
+                </span>
               </li>
               <li className="flex items-center space-x-2">
                 <svg
-                  className="w-5 h-5"
+                  className="w-4 h-4 sm:w-5 sm:h-5"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -154,15 +160,15 @@ export default function Footer() {
                     d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                   />
                 </svg>
-                <span>+91 9876543210</span>
+                <span className="text-xs sm:text-sm">+91 9876543210</span>
               </li>
             </ul>
           </div>
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-          <p className="text-sm">
+        <div className="border-t border-gray-800 mt-8 sm:mt-12 pt-6 sm:pt-8 text-center">
+          <p className="text-xs sm:text-sm">
             © {new Date().getFullYear()} Semester Simplified. All rights
             reserved.
           </p>
