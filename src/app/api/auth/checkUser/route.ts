@@ -15,7 +15,7 @@ export async function GET() {
 
     const cookieStore = await cookies();
     const token = cookieStore.get('AuthToken');
-    console.log("Token from cookie:", token);
+    // console.log("Token from cookie:", token);
 
     if (!token) {
       return ApiError('No auth token found', 401);
@@ -26,10 +26,10 @@ export async function GET() {
       process.env.JWT_SECRET as string
     ) as TYPE_OF_DECODED_USER_DATA;
 
-    console.log("this is decodeToken ==>", decodeToken );
+    // console.log("this is decodeToken ==>", decodeToken );
 
     const existingUser = await User.findOne({ _id: decodeToken.userId });
-    console.log("this is existingUser",existingUser);
+    // console.log("this is existingUser",existingUser);
 
     if (!existingUser) {
       return ApiError('User not found', 401);

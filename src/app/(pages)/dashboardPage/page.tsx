@@ -50,7 +50,7 @@ const DashboardContent = () => {
   const [filteredDocs, setFilteredDocs] = useState<Document[]>([]);
   const [loading, setLoading] = useState(true);
   const [authChecking, setAuthChecking] = useState(true);
-  const { isLoggedIn} = useSelector((state: any) => state.auth);
+  const { isLoggedIn } = useSelector((state: any) => state.auth);
 
   const [selectedCourse, setSelectedCourse] = useState(
     searchParams.get("course") || ""
@@ -58,6 +58,8 @@ const DashboardContent = () => {
   const [selectedSubject, setSelectedSubject] = useState(
     searchParams.get("subject") || ""
   );
+
+  
 
   // Filter states
   const [selectedUniversity, setSelectedUniversity] = useState<string>("all");
@@ -218,6 +220,8 @@ const DashboardContent = () => {
       setLoading(false);
     }
   };
+
+  // console.log("this is user data in dashBoardPage.tsx-> ", userData.data.userId);
 
   return (
     <div className="relative flex flex-col min-h-screen w-full bg-white">
