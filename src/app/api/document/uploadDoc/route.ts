@@ -10,27 +10,36 @@ interface DecodedUser  {
   userId: string;
 }
 
+const ALLOWED_FILE_TYPES = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
+
 export async function POST(req: Request) {
   try {
     await dbConnection();
 
     const formData = await req.formData();
-    const file = formData.get("PDF");
+    const file = formData.get("file");
     
     if (!file || !(file instanceof File)) {
       return ApiError("No file uploaded", 400);
     }
 
+    // Validate file type
+    if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+      return ApiError("Invalid file type. Only PDF and images (JPEG, PNG) are allowed.", 400);
+    }
+
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
+
+    // Determine folder based on file type
+    const folder = file.type === 'application/pdf' ? 'PDFs' : 'Images';
 
     const uploadResponse = await new Promise<any>((resolve, reject) => {
       cloudinary.uploader
         .upload_stream(
           {
             resource_type: "auto",
-            format: "pdf",
-            folder: "PDFs",
+            folder: folder,
             public_id: `${Date.now()}-${file.name}`,
           },
           (error, result) => {
@@ -51,10 +60,12 @@ export async function POST(req: Request) {
       return ApiError("Failed to upload file to Cloudinary", 500);
     }
 
-    const url = uploadResponse.secure_url.replace('/image/upload/', '/auto/upload/');
+    console.log("uploadResponse", uploadResponse);
+    console.log("uploadResponse url", uploadResponse.secure_url);
+
+    const url = uploadResponse.secure_url;
 
     const fields = Object.fromEntries(formData.entries());
-
     
     const { title, description, course, subject, category, university } = fields;
 
@@ -88,6 +99,7 @@ export async function POST(req: Request) {
       uploadedBy: decodedUser.userId,
       university,
       url,
+      fileType: file.type,
     });
 
     await User.findByIdAndUpdate(
@@ -96,7 +108,7 @@ export async function POST(req: Request) {
       { new: true }
     );
 
-    return ApiSuccess("Document uploaded successfully",newDoc,200);
+    return ApiSuccess("File uploaded successfully", newDoc, 200);
   } catch (error) {
     console.log("this is error line 80 in uploadDoc.ts", error);
     return ApiError("Internal Server Error", 500);

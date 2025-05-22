@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import toast from "react-hot-toast";
-
+import Image from "next/image";
 interface FormData {
   title: string;
   description: string;
@@ -23,9 +23,18 @@ interface FormData {
   university: string;
 }
 
+const ALLOWED_FILE_TYPES = [
+  "application/pdf",
+  "image/jpeg",
+  "image/png",
+  "image/jpg",
+];
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
 const UploadPage = () => {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   // Form data state
   const [formData, setFormData] = useState<FormData>({
@@ -58,11 +67,47 @@ const UploadPage = () => {
     }
   };
 
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+
+    if (!selectedFile) {
+      setFile(null);
+      setPreviewUrl(null);
+      return;
+    }
+
+    // Validate file type
+    if (!ALLOWED_FILE_TYPES.includes(selectedFile.type)) {
+      toast.error(
+        "Invalid file type. Only PDF and images (JPEG, PNG) are allowed."
+      );
+      e.target.value = "";
+      return;
+    }
+
+    // Validate file size
+    if (selectedFile.size > MAX_FILE_SIZE) {
+      toast.error("File size should be less than 10MB");
+      e.target.value = "";
+      return;
+    }
+
+    setFile(selectedFile);
+
+    // Create preview URL for images
+    if (selectedFile.type.startsWith("image/")) {
+      const url = URL.createObjectURL(selectedFile);
+      setPreviewUrl(url);
+    } else {
+      setPreviewUrl(null);
+    }
+  };
+
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!file) {
-      toast.error("Please select a PDF file");
+      toast.error("Please select a file");
       return;
     }
 
@@ -70,7 +115,7 @@ const UploadPage = () => {
 
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append("PDF", file);
+      formDataToSend.append("file", file);
 
       // Log the file details for debugging
       console.log("File being uploaded:", {
@@ -99,6 +144,7 @@ const UploadPage = () => {
       if (res.data.success) {
         toast.success("File uploaded successfully!");
         setFile(null);
+        setPreviewUrl(null);
         setFormData({
           title: "",
           description: "",
@@ -132,7 +178,7 @@ const UploadPage = () => {
       >
         <div className="text-left mb-6">
           <h1 className="text-2xl font-bold text-black text-center">
-            Upload Notes
+            Upload Material
           </h1>
         </div>
 
@@ -283,27 +329,34 @@ const UploadPage = () => {
 
         <div className="flex flex-col space-y-2">
           <label
-            htmlFor="pdf"
+            htmlFor="file"
             className="block text-lg text-black font-semibold"
           >
-            PDF File
+            File Upload
           </label>
           <Input
             type="file"
-            name="pdf"
-            id="pdf"
-            onChange={(e) => {
-              const selectedFile = e.target.files?.[0];
-              if (selectedFile && selectedFile.type === "application/pdf") {
-                setFile(selectedFile);
-              } else {
-                alert("Please select a valid PDF file");
-                e.target.value = "";
-              }
-            }}
-            accept="application/pdf"
+            name="file"
+            id="file"
+            onChange={handleFileChange}
+            accept=".pdf,.jpg,.jpeg,.png"
             required
+            className="bg-white text-black"
           />
+          <p className="text-sm text-gray-600">
+            Supported formats: PDF, JPEG, PNG (Max size: 10MB)
+          </p>
+          {previewUrl && (
+            <div className="mt-2">
+              <Image
+                src={previewUrl}
+                alt="Preview"
+                width={100}
+                height={100}
+                className="max-w-full h-auto max-h-48 rounded-lg shadow-md object-contain"
+              />
+            </div>
+          )}
         </div>
 
         <div>
