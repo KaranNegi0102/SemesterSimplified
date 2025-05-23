@@ -390,10 +390,10 @@ const UploadPage = () => {
           <button
             type="submit"
             disabled={uploading}
-            className={`w-full bg-blue-600 text-white font-semibold py-2.5 sm:py-3 rounded-md transition-colors duration-200 text-sm sm:text-base ${
+            className={`w-full bg-gray-900 text-white font-semibold py-2.5 sm:py-3 rounded-md transition-colors duration-200 text-sm sm:text-base ${
               uploading
                 ? "bg-gray-400 cursor-not-allowed"
-                : "hover:bg-blue-700 active:bg-blue-800"
+                : "hover:bg-gray-700 active:bg-gray-900"
             }`}
           >
             {uploading ? "Uploading..." : "Submit"}
