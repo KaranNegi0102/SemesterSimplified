@@ -37,12 +37,12 @@ export default function Home() {
       <div className="opacity-100 animate-fadeIn">
         {/* Centered Logo and Search Field */}
         <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12">
-          <h1 className="text-1xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 drop-shadow-lg mt-4 sm:mt-8 text-black">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 drop-shadow-lg mt-4 sm:mt-8 text-black">
             SEMESTER SIMPLIFIED
           </h1>
 
           {/* Main Logo */}
-          <div className="w-22 h-22 sm:w-38 sm:h-38 relative mb-4 sm:mb-6">
+          <div className="w-32 h-32 sm:w-38 sm:h-38 relative mb-4 sm:mb-6">
             <Image
               src={mainLogo}
               alt="Semester Simplified Logo"
@@ -52,7 +52,7 @@ export default function Home() {
             />
           </div>
 
-          <p className="text-xs sm:text-xl mb-2 sm:mb-3 font-semibold text-gray-800">
+          <p className="text-md sm:text-xl mb-8 sm:mb-3 font-semibold text-gray-800">
             Study Easier, Faster, and Better
           </p>
 
@@ -68,7 +68,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="mt-auto">
+      <div className="mt-[10px]">
         {/* Footer */}
         <Footer />
       </div>

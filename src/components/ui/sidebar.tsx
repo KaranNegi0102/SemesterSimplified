@@ -160,32 +160,38 @@ export function UploadSidebar({
     <>
       {/* Overlay */}
       {isOpen && (
-        <div className="fixed inset-0 bg-black/50 z-40" onClick={onClose} />
+        <div
+          className="fixed inset-0 bg-black/50 z-40 backdrop-blur-sm transition-opacity duration-300"
+          onClick={onClose}
+          aria-hidden="true"
+        />
       )}
 
       {/* Sidebar */}
       <div
         className={cn(
-          "fixed top-0 right-0 h-full w-[500px] bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50",
+          "fixed top-0 right-0 h-full w-full sm:w-[400px] md:w-[500px] bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50",
+          "flex flex-col",
           isOpen ? "translate-x-0" : "translate-x-full",
           className
         )}
         {...props}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b">
-          <h2 className="text-lg font-semibold">Upload Notes</h2>
+        <div className="flex items-center justify-between p-3 sm:p-4 border-b sticky top-0 bg-white z-10">
+          <h2 className="text-base sm:text-lg font-semibold">Upload Notes</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-gray-200"
+            aria-label="Close sidebar"
           >
-            <X className="h-5 w-5" />
+            <X className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-4 h-[calc(100%-64px)] overflow-y-auto">
-          {children}
+        <div className="flex-1 overflow-y-auto p-3 sm:p-4">
+          <div className="max-w-full">{children}</div>
         </div>
       </div>
     </>

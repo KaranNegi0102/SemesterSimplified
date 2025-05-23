@@ -63,18 +63,18 @@ export default function AutoSuggestSearch({
     >
       <div className="mb-3 sm:mb-4">
         <Select value={selectedCourse} onValueChange={handleCourseChange}>
-          <SelectTrigger className="w-full text-xs sm:text-base">
+          <SelectTrigger className="w-full text-sm sm:text-base">
             <SelectValue placeholder="Select a course" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all" className="text-xs sm:text-base">
+            <SelectItem value="all" className="text-sm sm:text-base">
               Select a course
             </SelectItem>
             {data.map((course) => (
               <SelectItem
                 key={course.degree}
                 value={course.degree}
-                className="text-xs sm:text-base"
+                className="text-sm sm:text-base"
               >
                 {course.degree}
               </SelectItem>
@@ -92,7 +92,7 @@ export default function AutoSuggestSearch({
             selectedCourse ? "Search subjects..." : "Select a course first"
           }
           disabled={!selectedCourse}
-          className={`w-full p-2 text-xs sm:text-base border text-black border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+          className={`w-full p-2 text-sm sm:text-base border text-black border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
             !selectedCourse ? "bg-gray-100 cursor-not-allowed" : ""
           }`}
         />

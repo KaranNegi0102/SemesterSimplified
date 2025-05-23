@@ -96,7 +96,7 @@ export default function NavBar() {
                   </li>
                   <li>
                     <Link href="/profile">
-                      <button className="border bg-white text-black px-2 py-0.5 rounded-lg transition-transform duration-300 hover:scale-110 hover:bg-gray-200 hover:text-black text-sm">
+                      <button className="border bg-white cursor-pointer text-black px-2 py-1.5 rounded-lg transition-transform duration-300 hover:scale-110 hover:bg-gray-200 hover:text-black text-sm">
                         Profile
                       </button>
                     </Link>
@@ -104,7 +104,7 @@ export default function NavBar() {
                   <li>
                     <button
                       onClick={handleLogoutButton}
-                      className="border border-black px-2 py-0.5 rounded-lg bg-red-500 text-white transition-transform duration-300 hover:scale-110 hover:bg-red-600 text-sm"
+                      className="border border-black cursor-pointer px-2 py-1.5 rounded-lg bg-red-500 text-white transition-transform duration-300 hover:scale-110 hover:bg-red-600 text-sm"
                     >
                       Log Out
                     </button>
@@ -120,14 +120,14 @@ export default function NavBar() {
                   </li>
                   <li>
                     <Link href="/loginPage">
-                      <button className="border border-white px-2 py-0.5 rounded-lg transition-transform duration-300 hover:scale-110 hover:bg-gray-200 text-sm">
+                      <button className="border cursor-pointer border-white hover:text-black px-2 py-1.5 rounded-lg transition-transform duration-300 hover:scale-110 hover:bg-gray-200 text-sm">
                         Log In
                       </button>
                     </Link>
                   </li>
                   <li>
                     <Link href="/registerPage">
-                      <button className="border border-black px-2 py-0.5 rounded-lg bg-slate-800 text-white transition-transform duration-300 hover:scale-110 hover:bg-slate-700 text-sm">
+                      <button className="border cursor-pointer border-white  px-2 py-1.5 rounded-lg bg-slate-800 text-white transition-transform duration-300 hover:scale-110 hover:bg-slate-700 text-sm">
                         Register
                       </button>
                     </Link>

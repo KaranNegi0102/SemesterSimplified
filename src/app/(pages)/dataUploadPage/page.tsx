@@ -171,21 +171,21 @@ const UploadPage = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 min-h-screen">
       <form
         onSubmit={submitHandler}
-        className="bg-gray-200 shadow-xl p-6 rounded-lg w-full max-w-xl mx-auto space-y-6"
+        className="bg-gray-200 shadow-xl p-3 sm:p-6 rounded-lg w-full max-w-xl mx-auto space-y-3 sm:space-y-6"
       >
-        <div className="text-left mb-6">
-          <h1 className="text-2xl font-bold text-black text-center">
+        <div className="text-left mb-3 sm:mb-6">
+          <h1 className="text-lg sm:text-2xl font-bold text-black text-center">
             Upload Material
           </h1>
         </div>
 
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col space-y-1.5 sm:space-y-2">
           <label
             htmlFor="title"
-            className="block text-lg  text-black font-semibold"
+            className="block text-sm sm:text-lg text-black font-semibold"
           >
             Title
           </label>
@@ -196,15 +196,15 @@ const UploadPage = () => {
             value={formData.title}
             onChange={changeHandler}
             placeholder="Enter Title"
-            className="bg-white text-black"
+            className="bg-white text-black w-full h-10 sm:h-11 text-sm sm:text-base"
             required
           />
         </div>
 
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col space-y-1.5 sm:space-y-2">
           <label
             htmlFor="description"
-            className="block text-lg text-black font-semibold"
+            className="block text-sm sm:text-lg text-black font-semibold"
           >
             Description
           </label>
@@ -214,123 +214,150 @@ const UploadPage = () => {
             value={formData.description}
             onChange={changeHandler}
             placeholder="Enter Description"
-            className="p-3 rounded-md bg-white text-black border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="p-2 sm:p-3 rounded-md bg-white text-black border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[80px] sm:min-h-[120px] text-sm sm:text-base resize-none"
             required
           />
         </div>
 
-        <div className="flex flex-col space-y-2">
-          <label
-            htmlFor="course"
-            className="block text-lg text-black font-semibold"
-          >
-            Course
-          </label>
-          <Select
-            name="course"
-            value={formData.course}
-            onValueChange={(value) =>
-              changeHandler({ target: { name: "course", value } } as any)
-            }
-          >
-            <SelectTrigger className="w-full bg-white text-black">
-              <SelectValue placeholder="Select Course" />
-            </SelectTrigger>
-            <SelectContent>
-              {data.map((degree, index) => (
-                <SelectItem key={index} value={degree.degree}>
-                  {degree.degree}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+          <div className="flex flex-col space-y-1.5 sm:space-y-2">
+            <label
+              htmlFor="course"
+              className="block text-sm sm:text-lg text-black font-semibold"
+            >
+              Course
+            </label>
+            <Select
+              name="course"
+              value={formData.course}
+              onValueChange={(value) =>
+                changeHandler({ target: { name: "course", value } } as any)
+              }
+            >
+              <SelectTrigger className="w-full bg-white text-black h-10 sm:h-11 text-sm sm:text-base">
+                <SelectValue placeholder="Select Course" />
+              </SelectTrigger>
+              <SelectContent className="max-h-[200px] sm:max-h-[300px]">
+                {data.map((degree, index) => (
+                  <SelectItem
+                    key={index}
+                    value={degree.degree}
+                    className="text-sm sm:text-base"
+                  >
+                    {degree.degree}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex flex-col space-y-1.5 sm:space-y-2">
+            <label
+              htmlFor="subject"
+              className="block text-sm sm:text-lg text-black font-semibold"
+            >
+              Subject
+            </label>
+            <Select
+              name="subject"
+              value={formData.subject}
+              onValueChange={(value) =>
+                changeHandler({ target: { name: "subject", value } } as any)
+              }
+              disabled={!formData.course}
+            >
+              <SelectTrigger className="w-full bg-white text-black h-10 sm:h-11 text-sm sm:text-base">
+                <SelectValue placeholder="Select Subject" />
+              </SelectTrigger>
+              <SelectContent className="max-h-[200px] sm:max-h-[300px]">
+                {subjects.map((subject, index) => (
+                  <SelectItem
+                    key={index}
+                    value={subject}
+                    className="text-sm sm:text-base"
+                  >
+                    {subject}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+          <div className="flex flex-col space-y-1.5 sm:space-y-2">
+            <label
+              htmlFor="category"
+              className="block text-sm sm:text-lg text-black font-semibold"
+            >
+              Category
+            </label>
+            <Select
+              name="category"
+              value={formData.category}
+              onValueChange={(value) =>
+                changeHandler({ target: { name: "category", value } } as any)
+              }
+            >
+              <SelectTrigger className="w-full bg-white text-black h-10 sm:h-11 text-sm sm:text-base">
+                <SelectValue placeholder="Select Category" />
+              </SelectTrigger>
+              <SelectContent className="max-h-[200px] sm:max-h-[300px]">
+                <SelectItem
+                  value="assignments"
+                  className="text-sm sm:text-base"
+                >
+                  Assignment
                 </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="flex flex-col space-y-2">
-          <label
-            htmlFor="subject"
-            className="block text-lg text-black font-semibold"
-          >
-            Subject
-          </label>
-          <Select
-            name="subject"
-            value={formData.subject}
-            onValueChange={(value) =>
-              changeHandler({ target: { name: "subject", value } } as any)
-            }
-            disabled={!formData.course}
-          >
-            <SelectTrigger className="w-full bg-white text-black">
-              <SelectValue placeholder="Select Subject" />
-            </SelectTrigger>
-            <SelectContent>
-              {subjects.map((subject, index) => (
-                <SelectItem key={index} value={subject}>
-                  {subject}
+                <SelectItem value="notes" className="text-sm sm:text-base">
+                  Notes
                 </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="flex flex-col space-y-2">
-          <label
-            htmlFor="category"
-            className="block text-lg text-black font-semibold"
-          >
-            Category
-          </label>
-          <Select
-            name="category"
-            value={formData.category}
-            onValueChange={(value) =>
-              changeHandler({ target: { name: "category", value } } as any)
-            }
-          >
-            <SelectTrigger className="w-full bg-white text-black">
-              <SelectValue placeholder="Select Category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="assignments">Assignment</SelectItem>
-              <SelectItem value="notes">Notes</SelectItem>
-              <SelectItem value="books">Books</SelectItem>
-              <SelectItem value="papers">Previous Year Papers</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="flex flex-col space-y-2">
-          <label
-            htmlFor="university"
-            className="block text-lg text-black font-semibold"
-          >
-            University
-          </label>
-          <Select
-            name="university"
-            value={formData.university}
-            onValueChange={(value) =>
-              changeHandler({ target: { name: "university", value } } as any)
-            }
-          >
-            <SelectTrigger className="w-full bg-white text-black">
-              <SelectValue placeholder="Select University" />
-            </SelectTrigger>
-            <SelectContent>
-              {UniversitiesList.map((university, index) => (
-                <SelectItem key={index} value={university.fullName}>
-                  {university.fullName}
+                <SelectItem value="books" className="text-sm sm:text-base">
+                  Books
                 </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+                <SelectItem value="papers" className="text-sm sm:text-base">
+                  Previous Year Papers
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex flex-col space-y-1.5 sm:space-y-2">
+            <label
+              htmlFor="university"
+              className="block text-sm sm:text-lg text-black font-semibold"
+            >
+              University
+            </label>
+            <Select
+              name="university"
+              value={formData.university}
+              onValueChange={(value) =>
+                changeHandler({ target: { name: "university", value } } as any)
+              }
+            >
+              <SelectTrigger className="w-full bg-white text-black h-10 sm:h-11 text-sm sm:text-base">
+                <SelectValue placeholder="Select University" />
+              </SelectTrigger>
+              <SelectContent className="max-h-[200px] sm:max-h-[300px]">
+                {UniversitiesList.map((university, index) => (
+                  <SelectItem
+                    key={index}
+                    value={university.fullName}
+                    className="text-sm sm:text-base"
+                  >
+                    {university.fullName}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col space-y-1.5 sm:space-y-2">
           <label
             htmlFor="file"
-            className="block text-lg text-black font-semibold"
+            className="block text-sm sm:text-lg text-black font-semibold"
           >
             File Upload
           </label>
@@ -341,30 +368,32 @@ const UploadPage = () => {
             onChange={handleFileChange}
             accept=".pdf,.jpg,.jpeg,.png"
             required
-            className="bg-white text-black"
+            className="bg-white text-black w-full h-10 sm:h-11 text-sm sm:text-base file:mr-4 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
           />
-          <p className="text-sm text-gray-600">
+          <p className="text-xs sm:text-sm text-gray-600 mt-1">
             Supported formats: PDF, JPEG, PNG (Max size: 10MB)
           </p>
           {previewUrl && (
-            <div className="mt-2">
+            <div className="mt-2 flex justify-center">
               <Image
                 src={previewUrl}
                 alt="Preview"
-                width={100}
-                height={100}
-                className="max-w-full h-auto max-h-48 rounded-lg shadow-md object-contain"
+                width={200}
+                height={200}
+                className="max-w-full h-auto max-h-40 sm:max-h-48 rounded-lg shadow-md object-contain"
               />
             </div>
           )}
         </div>
 
-        <div>
+        <div className="pt-2">
           <button
             type="submit"
             disabled={uploading}
-            className={`w-full bg-blue-600 text-white font-semibold py-3 rounded-md transition-colors duration-200 ${
-              uploading ? "bg-gray-400 cursor-not-allowed" : "hover:bg-blue-700"
+            className={`w-full bg-blue-600 text-white font-semibold py-2.5 sm:py-3 rounded-md transition-colors duration-200 text-sm sm:text-base ${
+              uploading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "hover:bg-blue-700 active:bg-blue-800"
             }`}
           >
             {uploading ? "Uploading..." : "Submit"}

@@ -58,8 +58,6 @@ const DashboardContent = () => {
     searchParams.get("subject") || ""
   );
 
-  
-
   // Filter states
   const [selectedUniversity, setSelectedUniversity] = useState<string>("all");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
@@ -170,10 +168,23 @@ const DashboardContent = () => {
         <NavBar />
         <div className="container mx-auto px-4 py-16">
           <Card className="max-w-md mx-auto p-6 text-center">
-            <h2 className="text-2xl font-bold mb-4">Login Required</h2>
+            <h2 className="text-2xl font-bold mb-4">Wait for 5 seconds</h2>
             <p className="text-gray-600 mb-6">
-              Please login to access the dashboard content.
+              If It Goes Away Then You Are Logged In If Not
             </p>
+            <div className="flex justify-center ">
+              <svg
+                className="animate-bounce w-6 h-6 text-gray-700"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+              </svg>
+            </div>
             <Button onClick={() => router.push("/loginPage")}>
               Go to Login
             </Button>
@@ -226,28 +237,28 @@ const DashboardContent = () => {
       <NavBar />
 
       {/* this div contains auto suggestion part */}
-      <div className="flex justify-center w-full p-4">
-        <div className="w-full flex justify-between items-center gap-4 p-1">
+      <div className="flex flex-col md:flex-row justify-center w-full p-4 gap-4">
+        <div className="w-full flex flex-col md:flex-row  justify-between items-center gap-4 p-1">
           {/* Logo - Left */}
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 order-1 md:order-1 md:ml-10">
             <Image
               src={mainLogo}
               alt="Semester Simplified Logo"
               width={150}
               height={150}
-              className="rounded-full"
+              className="rounded-full w-[100px] h-[100px] md:w-[150px] md:h-[150px]"
             />
           </div>
 
           {/* Search - Middle */}
-          <div className="flex-1 flex justify-center">
-            <div className="w-[600px]">
+          <div className="flex-1 flex justify-center order-1 md:order-2 w-full md:w-auto">
+            <div className="w-full md:w-[600px]">
               <AutoSuggestSearch onSelectionChange={handleSelectionChange} />
             </div>
           </div>
 
           {/* Buttons - Right */}
-          <div className="flex-shrink-0 flex gap-2">
+          <div className="flex-shrink-0 flex gap-2 order-3">
             <Button
               variant="outline"
               size="icon"
@@ -269,9 +280,9 @@ const DashboardContent = () => {
       </div>
 
       {/* in this div there is one big and inside that big div there are two more divs in collumn way  */}
-      <div className="flex flex-row w-full p-2 gap-6 mb-[10%]">
+      <div className="flex flex-col lg:flex-row w-full p-2 gap-6 mb-[10%]">
         {/* Second column div - Filters */}
-        <div className="w-1/3 h-full bg-gray-100 rounded-lg shadow-md p-3">
+        <div className="w-full  lg:w-1/3 h-full bg-gray-100 rounded-lg shadow-md p-3 mb-4 lg:mb-0">
           <h2 className="text-lg font-bold text-center mb-3">Filter Notes</h2>
 
           {/* University Filter */}
@@ -302,7 +313,7 @@ const DashboardContent = () => {
             <h3 className="text-sm font-semibold text-gray-900 mb-2">
               Material Types
             </h3>
-            <div className="grid grid-cols-1 gap-2">
+            <div className="grid grid-cols-4 sm:grid-cols-2 lg:grid-cols-1 gap-2">
               {category.map((category) => (
                 <Card
                   key={category}
@@ -313,7 +324,9 @@ const DashboardContent = () => {
                   }`}
                   onClick={() => handleCategoryChange(category)}
                 >
-                  <p className="text-sm capitalize ms-4">{category}</p>
+                  <p className="text-sm capitalize truncate">
+                    {category === "assignments" ? "Assign" : category}
+                  </p>
                 </Card>
               ))}
             </div>
@@ -321,7 +334,7 @@ const DashboardContent = () => {
         </div>
 
         {/* First column div */}
-        <div className="w-full bg-gray-100 rounded-lg shadow-md p-6">
+        <div className="w-full bg-gray-100 rounded-lg shadow-md p-4 md:p-6">
           <h2 className="text-lg font-bold mb-3">
             All documents related to your Choice...
           </h2>
@@ -335,16 +348,18 @@ const DashboardContent = () => {
                   className="border rounded-lg p-3 bg-gray-200 hover:shadow-md transition-shadow duration-200"
                 >
                   <div className="flex items-center gap-2 mb-1">
-                    <BookOpen className="h-4 w-4 text-gray-600" />
-                    <h3 className="text-base font-semibold">{doc.title}</h3>
+                    <BookOpen className="h-4 w-4 text-gray-600 flex-shrink-0" />
+                    <h3 className="text-base font-semibold truncate">
+                      {doc.title}
+                    </h3>
                   </div>
-                  <p className="text-sm text-gray-600 mb-1">
+                  <p className="text-sm text-gray-600 mb-1 line-clamp-2">
                     Description: {doc.description}
                   </p>
-                  <div className="flex justify-between font-semibold items-center">
-                    <div className="text-xs text-gray-500">
-                      <span className="mr-2">Course: {doc.course}</span>
-                      <span className="mr-2">•</span>
+                  <div className="flex flex-col sm:flex-row justify-between font-semibold items-start sm:items-center gap-2">
+                    <div className="text-xs text-gray-500 flex flex-wrap gap-x-2">
+                      <span>Course: {doc.course}</span>
+                      <span>•</span>
                       <span>Subject: {doc.subject}</span>
                     </div>
                     <div className="flex gap-2">

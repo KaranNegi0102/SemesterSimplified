@@ -40,7 +40,6 @@ export default function RegisterForm(){
     setIsLoading(true);
 
     try {
-      // TODO: Implement your registration logic here
 
       console.log("this is FE data", data);
       const response = await axios.post("/api/auth/register", data);
@@ -68,7 +67,7 @@ export default function RegisterForm(){
             Already have an account?{" "}
             <Link
               href="/loginPage"
-              className="font-medium text-indigo-600 hover:text-indigo-500"
+              className="font-medium text-gray-700 hover:underline hover:text-gray-900 transition-colors duration-200"
             >
               Sign in
             </Link>

@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function UniversitiesListed() {
   return (
     <div className="relative w-full overflow-hidden bg-gray-50 py-4 sm:py-6 md:py-8">
-      <div className="flex animate-scroll">
+      <div className="flex animate-scroll hover:pause-none">
         {/* First set of universities */}
         {universityList.map((university, index) => (
           <div
@@ -50,6 +50,26 @@ export default function UniversitiesListed() {
           </div>
         ))}
       </div>
+
+      <style jsx global>{`
+        @keyframes scroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+
+        .animate-scroll {
+          animation: scroll 50s linear infinite;
+          width: max-content;
+        }
+
+        .animate-scroll:hover {
+          animation-play-state: running;
+        }
+      `}</style>
     </div>
   );
 }
