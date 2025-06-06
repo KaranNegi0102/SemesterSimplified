@@ -4,7 +4,7 @@
 
 ---
 
-## 🚀 Running Tests
+## 🚀 Live Demo
 
 [🔗 Open SemesterSimplified](http://semestersimplified.vercel.app) in your browser to see the result.
 
